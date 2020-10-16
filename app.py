@@ -6,6 +6,7 @@ import json
 
 # Importando modelos
 from user import User
+from song import Song
 
 app = Flask(__name__)
 
@@ -13,10 +14,14 @@ CORS(app)
 
 # Declaracion de objetos
 Users = []
+Songs = []
 
 # Datos ingresados
 Users.append(User(1,'Angel', 'Ordon', 'root', 'root', 1))
 Users.append(User(2,'Diego', 'Pinto', 'diego', '123', 2))
+
+Songs.append(Song(1, 'International Love', 'Fidel Nadal', 'International Love', 'https://images-na.ssl-images-amazon.com/images/I/61AobF8AZLL._SY355_.jpg', '2008', 'https://open.spotify.com/track/2O282x8rik9PMihQAx6bAq?si=YBgZXzIzQoWI5b2x5Gzyqw', 'https://www.youtube.com/watch?v=y3WGp_ZEGUo', 1))
+Songs.append(Song(2, 'Vibra Positiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 1))
 
 # --------------- INICIO RUTAS ---------------
 
@@ -113,7 +118,7 @@ def deleteUser(id):
     answer = jsonify({'message': 'User Deleted'})
     return (answer)
 
-# Obteniendo el ultimo registro
+# Obteniendo el ultimo registro de user
 @app.route('/users/last', methods=['GET'])
 def lastUser():
     global Users
@@ -128,6 +133,127 @@ def lastUser():
         'user_type': user.getUser_type()
     }
     answer = jsonify({'message': 'Last user', 'User': Fact})
+    return (answer)
+
+# --------------- Song ---------------
+
+# Get songs
+@app.route('/songs', methods=['GET'])
+def selectAllSongs():
+    global Songs
+    Data = []
+
+    for song in Songs:
+        Fact = {
+            'id': song.getId(),
+            'name': song.getName(),
+            'artist': song.getArtist(),
+            'album': song.getAlbum(),
+            'image': song.getImage(),
+            'date': song.getDate(),
+            'link_spotify': song.getLink_spotify(),
+            'link_youtube': song.getLink_youtube(),
+            'state': song.getState()
+        }
+        Data.append(Fact)
+    
+    answer = jsonify({'songs': Data})
+
+    return (answer)
+
+# Get song
+@app.route('/songs/<int:id>', methods=['GET'])
+def findSong(id):
+    global Songs
+    for song in Songs:
+        if song.getId() == id:
+            Fact = {
+                'id': song.getId(),
+                'name': song.getName(),
+                'artist': song.getArtist(),
+                'album': song.getAlbum(),
+                'image': song.getImage(),
+                'date': song.getDate(),
+                'link_spotify': song.getLink_spotify(),
+                'link_youtube': song.getLink_youtube(),
+                'state': song.getState()
+            }
+            break
+    answer = jsonify({'message': 'Song found', 'song': Fact})
+    return (answer)
+
+# Post song
+@app.route('/songs', methods=['POST'])
+def insertSong():
+    global Songs
+
+    # obteniendo el ultimo id para tener un correlativo
+    song = Songs[-1]
+    position = song.getId() + 1
+
+    new = Song(
+        position,
+        request.json['name'],
+        request.json['artist'],
+        request.json['album'],
+        request.json['image'],
+        request.json['date'],
+        request.json['link_spotify'],
+        request.json['link_youtube'],
+        request.json['state']
+    )
+    Songs.append(new)
+    answer = jsonify({'message': 'Added song'})
+    return (answer)
+
+# Put song
+@app.route('/songs/<int:id>', methods=['PUT'])
+def updateSong(id):
+    global Songs
+    for i in range(len(Songs)):
+        if id == Songs[i].getId():
+            Songs[i].setId(request.json['id'])
+            Songs[i].setName(request.json['name'])
+            Songs[i].setArtist(request.json['artist'])
+            Songs[i].setAlbum(request.json['album'])
+            Songs[i].setImage(request.json['image'])
+            Songs[i].setDate(request.json['date'])
+            Songs[i].setLink_spotify(request.json['link_spotify'])
+            Songs[i].setLink_youtube(request.json['link_youtube'])
+            Songs[i].setState(request.json['state'])
+            break
+    answer = jsonify({'message': 'Updated song'})
+    return (answer)
+
+# Delet song
+@app.route('/songs/<int:id>', methods=['DELETE'])
+def deleteSong(id):
+    global Songs
+    for i in range(len(Songs)):
+        if id == Songs[i].getId():
+            del Songs[i]
+            break
+    answer = jsonify({'message': 'Song Deleted'})
+    return (answer)
+
+# Obteniendo el ultimo registro de song
+@app.route('/songs/last', methods=['GET'])
+def lastSong():
+    global Songs
+    song = Songs[-1]
+
+    Fact = {
+        'id': song.getId(),
+        'name': song.getName(),
+        'artist': song.getArtist(),
+        'album': song.getAlbum(),
+        'image': song.getImage(),
+        'date': song.getDate(),
+        'link_spotify': song.getLink_spotify(),
+        'link_youtube': song.getLink_youtube(),
+        'state': song.getState()
+    }
+    answer = jsonify({'message': 'Last song', 'Song': Fact})
     return (answer)
 
 # --------------- FIN RUTAS ---------------
