@@ -38,14 +38,14 @@ class User:
         return self.lastname
     
     def setLastname(self, lastname):
-        self.lastname
+        self.lastname = lastname
 
     # username
     def getUsername(self):
         return self.username
     
     def setUsername(self, username):
-        self.username
+        self.username = username
 
     # password
     def getPassword(self):

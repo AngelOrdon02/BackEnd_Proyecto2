@@ -22,24 +22,7 @@ Users.append(User(2,'Diego', 'Pinto', 'diego', '123', 2))
 
 @app.route('/', methods=['GET'])
 def rutaInicial():
-    global Users
-    #positon = Users[-1]
-    #last_id = position.getId()
-
-    user = Users[-1]
-
-    Fact = {
-        'id': user.getId(),
-        'name': user.getName(),
-        'lastname': user.getLastname(),
-        'username': user.getUsername(),
-        'password': user.getPassword(),
-        'user_type': user.getUser_type()
-    }
-
-    answer = jsonify({'User': Fact})
-    return (answer)
-    #return ("Corriendo API :D, uff")
+    return ("Corriendo API :D, uff")
 
 # --------------- User ---------------
 
@@ -86,8 +69,13 @@ def findUser(id):
 @app.route('/users', methods=['POST'])
 def insertUser():
     global Users
+
+    # obteniendo el ultimo id para tener un correlativo
+    user = Users[-1]
+    position = user.getId() + 1
+
     new = User(
-        request.json['id'],
+        position,
         request.json['name'],
         request.json['lastname'],
         request.json['username'],
@@ -125,6 +113,22 @@ def deleteUser(id):
     answer = jsonify({'message': 'User Deleted'})
     return (answer)
 
+# Obteniendo el ultimo registro
+@app.route('/users/last', methods=['GET'])
+def lastUser():
+    global Users
+    user = Users[-1]
+
+    Fact = {
+        'id': user.getId(),
+        'name': user.getName(),
+        'lastname': user.getLastname(),
+        'username': user.getUsername(),
+        'password': user.getPassword(),
+        'user_type': user.getUser_type()
+    }
+    answer = jsonify({'message': 'Last user', 'User': Fact})
+    return (answer)
 
 # --------------- FIN RUTAS ---------------
 
