@@ -7,6 +7,7 @@ import json
 # Importando modelos
 from user import User
 from song import Song
+from commentary import Commentary
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ CORS(app)
 # Declaracion de objetos
 Users = []
 Songs = []
+Comments = []
 
 # Datos ingresados
 Users.append(User(1,'Angel', 'Ordon', 'root', 'root', 1))
@@ -22,6 +24,11 @@ Users.append(User(2,'Diego', 'Pinto', 'diego', '123', 2))
 
 Songs.append(Song(1, 'International Love', 'Fidel Nadal', 'International Love', 'https://images-na.ssl-images-amazon.com/images/I/61AobF8AZLL._SY355_.jpg', '2008', 'https://open.spotify.com/track/2O282x8rik9PMihQAx6bAq?si=YBgZXzIzQoWI5b2x5Gzyqw', 'https://www.youtube.com/watch?v=y3WGp_ZEGUo', 1))
 Songs.append(Song(2, 'Vibra Positiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 1))
+
+Comments.append(Commentary(1, 1, 1, '2020', 'Que buena rola'))
+Comments.append(Commentary(2, 2, 1, '2020', 'La escucho diario'))
+Comments.append(Commentary(3, 1, 2, '2020', 'Me levanta el animo'))
+Comments.append(Commentary(4, 2, 2, '2020', 'Buen ritmo'))
 
 # --------------- INICIO RUTAS ---------------
 
@@ -118,7 +125,7 @@ def deleteUser(id):
     answer = jsonify({'message': 'User Deleted'})
     return (answer)
 
-# Obteniendo el ultimo registro de user
+# Obteniendo el ultimo registro de users
 @app.route('/users/last', methods=['GET'])
 def lastUser():
     global Users
@@ -132,7 +139,7 @@ def lastUser():
         'password': user.getPassword(),
         'user_type': user.getUser_type()
     }
-    answer = jsonify({'message': 'Last user', 'User': Fact})
+    answer = jsonify({'message': 'Last user', 'user': Fact})
     return (answer)
 
 # --------------- Song ---------------
@@ -236,7 +243,7 @@ def deleteSong(id):
     answer = jsonify({'message': 'Song Deleted'})
     return (answer)
 
-# Obteniendo el ultimo registro de song
+# Obteniendo el ultimo registro de songs
 @app.route('/songs/last', methods=['GET'])
 def lastSong():
     global Songs
@@ -253,7 +260,108 @@ def lastSong():
         'link_youtube': song.getLink_youtube(),
         'state': song.getState()
     }
-    answer = jsonify({'message': 'Last song', 'Song': Fact})
+    answer = jsonify({'message': 'Last song', 'song': Fact})
+    return (answer)
+
+# --------------- Commentary ---------------
+
+# Get comments
+@app.route('/comments', methods=['GET'])
+def selectAllComments():
+    global Comments
+    Data = []
+
+    for commentary in Comments:
+        Fact = {
+            'id': commentary.getId(),
+            'id_user': commentary.getId_user(),
+            'id_song': commentary.getId_song(),
+            'date': commentary.getDate(),
+            'description': commentary.getDescription()
+        }
+        Data.append(Fact)
+    
+    answer = jsonify({'comments': Data})
+
+    return (answer)
+
+# Get commentary
+@app.route('/comments/<int:id>', methods=['GET'])
+def findCommentary(id):
+    global Comments
+    for commentary in Comments:
+        if commentary.getId() == id:
+            Fact = {
+                'id': commentary.getId(),
+                'id_user': commentary.getId_user(),
+                'id_song': commentary.getId_song(),
+                'date': commentary.getDate(),
+                'description': commentary.getDescription()
+            }
+            break
+    answer = jsonify({'message': 'Commentary found', 'commentary': Fact})
+    return (answer)
+
+# Post commentary
+@app.route('/comments', methods=['POST'])
+def insertCommentary():
+    global Comments
+
+    # obteniendo el ultimo id para tener un correlativo
+    commentary = Comments[-1]
+    position = commentary.getId() + 1
+
+    new = Commentary(
+        position,
+        request.json['id_user'],
+        request.json['id_song'],
+        request.json['date'],
+        request.json['description']
+    )
+    Comments.append(new)
+    answer = jsonify({'message': 'Added commentary'})
+    return (answer)
+
+# Put commentary
+@app.route('/comments/<int:id>', methods=['PUT'])
+def updateCommentary(id):
+    global Comments
+    for i in range(len(Comments)):
+        if id == Comments[i].getId():
+            Comments[i].setId(request.json['id'])
+            Comments[i].setId_user(request.json['id_user'])
+            Comments[i].setId_song(request.json['id_song'])
+            Comments[i].setDate(request.json['date'])
+            Comments[i].setDescription(request.json['description'])
+            break
+    answer = jsonify({'message': 'Updated commentary'})
+    return (answer)
+
+# Delet commentary
+@app.route('/comments/<int:id>', methods=['DELETE'])
+def deleteCommentary(id):
+    global Comments
+    for i in range(len(Comments)):
+        if id == Comments[i].getId():
+            del Comments[i]
+            break
+    answer = jsonify({'message': 'Commentary Deleted'})
+    return (answer)
+
+# Obteniendo el ultimo registro de comments
+@app.route('/comments/last', methods=['GET'])
+def lastCommentary():
+    global Comments
+    commentary = Comments[-1]
+
+    Fact = {
+        'id': commentary.getId(),
+        'id_user': commentary.getId_user(),
+        'id_song': commentary.getId_song(),
+        'date': commentary.getDate(),
+        'description': commentary.getDescription()
+    }
+    answer = jsonify({'message': 'Last commentary', 'commentary': Fact})
     return (answer)
 
 # --------------- FIN RUTAS ---------------
