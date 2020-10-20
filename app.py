@@ -9,6 +9,7 @@ from user import User
 from song import Song
 from commentary import Commentary
 from playlist import Playlist
+from playlist_song import Playlist_song
 
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ Users = []
 Songs = []
 Comments = []
 Playlists = []
+Playlist_song_array = []
 
 # Datos ingresados
 Users.append(User(1,'Angel', 'Ordon', 'root', 'root', 1))
@@ -34,6 +36,10 @@ Comments.append(Commentary(4, 2, 2, '2020', 'Buen ritmo'))
 
 Playlists.append(Playlist(1, 1, 'Rolitas', 'Musica favorita :D'))
 Playlists.append(Playlist(2, 2, 'Musica varia', 'Musica para el gimnasio'))
+
+Playlist_song_array.append(Playlist_song(1, 1, 1))
+Playlist_song_array.append(Playlist_song(2, 2, 1))
+Playlist_song_array.append(Playlist_song(3, 1, 2))
 
 # --------------- INICIO RUTAS ---------------
 
@@ -458,11 +464,102 @@ def lastPlaylist():
 
     Fact = {
         'id': playlist.getId(),
-            'id_user': playlist.getId_user(),
-            'name': playlist.getName(),
-            'description': playlist.getDescription()
+        'id_user': playlist.getId_user(),
+        'name': playlist.getName(),
+        'description': playlist.getDescription()
     }
     answer = jsonify({'message': 'Last playlist', 'playlist': Fact})
+    return (answer)
+
+# --------------- Playlist_song ---------------
+
+# Get playlist_song_array
+@app.route('/playlist_song', methods=['GET'])
+def selectAllPlaylist_song_array():
+    global Playlist_song_array
+    Data = []
+
+    for playlist_song in Playlist_song_array:
+        Fact = {
+            'id': playlist_song.getId(),
+            'id_playlist': playlist_song.getId_playlist(),
+            'id_song': playlist_song.getId_song()
+        }
+        Data.append(Fact)
+    
+    answer = jsonify({'playlist_song_array': Data})
+
+    return (answer)
+
+# Get playlist_song
+@app.route('/playlist_song/<int:id>', methods=['GET'])
+def findPlaylist_song(id):
+    global Playlist_song_array
+    for playlist_song in Playlist_song_array:
+        if playlist_song.getId() == id:
+            Fact = {
+                'id': playlist_song.getId(),
+                'id_playlist': playlist_song.getId_playlist(),
+                'id_song': playlist_song.getId_song()
+            }
+            break
+    answer = jsonify({'message': 'Playlist_song found', 'playlist_song': Fact})
+    return (answer)
+
+# Post playlist_song
+@app.route('/playlist_song', methods=['POST'])
+def insertPlaylist_song():
+    global Playlist_song_array
+
+    # obteniendo el ultimo id para tener un correlativo
+    playlist_song = Playlist_song_array[-1]
+    position = playlist_song.getId() + 1
+
+    new = Playlist_song(
+        position,
+        request.json['id_playlist'],
+        request.json['id_song']
+    )
+    Playlist_song_array.append(new)
+    answer = jsonify({'message': 'Added playlist_song'})
+    return (answer)
+
+# Put playlist_song
+@app.route('/playlist_song/<int:id>', methods=['PUT'])
+def updatePlaylist_song(id):
+    global Playlist_song_array
+    for i in range(len(Playlist_song_array)):
+        if id == Playlist_song_array[i].getId():
+            Playlist_song_array[i].setId(request.json['id'])
+            Playlist_song_array[i].setId_playlist(request.json['id_playlist'])
+            Playlist_song_array[i].setId_song(request.json['id_song'])
+            break
+    answer = jsonify({'message': 'Updated playlist_song'})
+    return (answer)
+
+# Delet playlist_song
+@app.route('/playlist_song/<int:id>', methods=['DELETE'])
+def deletePlaylist_song(id):
+    global Playlist_song_array
+    for i in range(len(Playlist_song_array)):
+        if id == Playlist_song_array[i].getId():
+            del Playlist_song_array[i]
+            break
+    answer = jsonify({'message': 'Playlist_song Deleted'})
+    return (answer)
+
+# Obteniendo el ultimo registro de playlist_song_array
+@app.route('/playlist_song/last', methods=['GET'])
+def lastPlaylist_song():
+    global Playlist_song_array
+    playlist_song = Playlist_song_array[-1]
+
+    Fact = {
+        'id': playlist_song.getId(),
+        'id_playlist': playlist_song.getId_playlist(),
+        'id_song': playlist_song.getId_song()
+    }
+    answer = jsonify({'message': 'Last playlist_song', 'playlist_song': Fact})
     return (answer)
 
 # --------------- FIN RUTAS ---------------
