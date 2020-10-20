@@ -8,6 +8,7 @@ import json
 from user import User
 from song import Song
 from commentary import Commentary
+from playlist import Playlist
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ CORS(app)
 Users = []
 Songs = []
 Comments = []
+Playlists = []
 
 # Datos ingresados
 Users.append(User(1,'Angel', 'Ordon', 'root', 'root', 1))
@@ -29,6 +31,9 @@ Comments.append(Commentary(1, 1, 1, '2020', 'Que buena rola'))
 Comments.append(Commentary(2, 2, 1, '2020', 'La escucho diario'))
 Comments.append(Commentary(3, 1, 2, '2020', 'Me levanta el animo'))
 Comments.append(Commentary(4, 2, 2, '2020', 'Buen ritmo'))
+
+Playlists.append(Playlist(1, 1, 'Rolitas', 'Musica favorita :D'))
+Playlists.append(Playlist(2, 2, 'Musica varia', 'Musica para el gimnasio'))
 
 # --------------- INICIO RUTAS ---------------
 
@@ -362,6 +367,102 @@ def lastCommentary():
         'description': commentary.getDescription()
     }
     answer = jsonify({'message': 'Last commentary', 'commentary': Fact})
+    return (answer)
+
+# --------------- Playlist ---------------
+
+# Get playlists
+@app.route('/playlists', methods=['GET'])
+def selectAllPlaylists():
+    global Playlists
+    Data = []
+
+    for playlist in Playlists:
+        Fact = {
+            'id': playlist.getId(),
+            'id_user': playlist.getId_user(),
+            'name': playlist.getName(),
+            'description': playlist.getDescription()
+        }
+        Data.append(Fact)
+    
+    answer = jsonify({'playlists': Data})
+
+    return (answer)
+
+# Get playlist
+@app.route('/playlists/<int:id>', methods=['GET'])
+def findPlaylist(id):
+    global Playlists
+    for playlist in Playlists:
+        if playlist.getId() == id:
+            Fact = {
+                'id': playlist.getId(),
+                'id_user': playlist.getId_user(),
+                'name': playlist.getName(),
+                'description': playlist.getDescription()
+            }
+            break
+    answer = jsonify({'message': 'Playlist found', 'playlist': Fact})
+    return (answer)
+
+# Post playlist
+@app.route('/playlists', methods=['POST'])
+def insertPlaylist():
+    global Playlists
+
+    # obteniendo el ultimo id para tener un correlativo
+    playlist = Playlists[-1]
+    position = playlist.getId() + 1
+
+    new = Playlist(
+        position,
+        request.json['id_user'],
+        request.json['name'],
+        request.json['description']
+    )
+    Playlists.append(new)
+    answer = jsonify({'message': 'Added playlist'})
+    return (answer)
+
+# Put playlist
+@app.route('/playlists/<int:id>', methods=['PUT'])
+def updatePlaylist(id):
+    global Playlists
+    for i in range(len(Playlists)):
+        if id == Playlists[i].getId():
+            Playlists[i].setId(request.json['id'])
+            Playlists[i].setId_user(request.json['id_user'])
+            Playlists[i].setName(request.json['name'])
+            Playlists[i].setDescription(request.json['description'])
+            break
+    answer = jsonify({'message': 'Updated playlist'})
+    return (answer)
+
+# Delet playlist
+@app.route('/playlists/<int:id>', methods=['DELETE'])
+def deletePlaylist(id):
+    global Playlists
+    for i in range(len(Playlists)):
+        if id == Playlists[i].getId():
+            del Playlists[i]
+            break
+    answer = jsonify({'message': 'Playlist Deleted'})
+    return (answer)
+
+# Obteniendo el ultimo registro de playlists
+@app.route('/playlists/last', methods=['GET'])
+def lastPlaylist():
+    global Playlists
+    playlist = Playlists[-1]
+
+    Fact = {
+        'id': playlist.getId(),
+            'id_user': playlist.getId_user(),
+            'name': playlist.getName(),
+            'description': playlist.getDescription()
+    }
+    answer = jsonify({'message': 'Last playlist', 'playlist': Fact})
     return (answer)
 
 # --------------- FIN RUTAS ---------------
