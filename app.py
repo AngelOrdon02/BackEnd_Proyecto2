@@ -67,6 +67,7 @@ def selectAllUsers():
         Data.append(Fact)
     
     answer = jsonify({'users': Data})
+    #answer = jsonify(Data)
 
     return (answer)
 
@@ -175,6 +176,7 @@ def selectAllSongs():
         }
         Data.append(Fact)
     
+    #answer = jsonify(Data)
     answer = jsonify({'songs': Data})
 
     return (answer)
