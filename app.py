@@ -378,6 +378,27 @@ def lastCommentary():
     answer = jsonify({'message': 'Last commentary', 'commentary': Fact})
     return (answer)
 
+# Get comments for song
+@app.route('/comments_song/<int:id>', methods=['GET'])
+def selectAllCommentsSong(id):
+    global Comments
+    Data = []
+
+    for commentary in Comments:
+        if commentary.getId_song() == id:
+            Fact = {
+                'id': commentary.getId(),
+                'id_user': commentary.getId_user(),
+                'id_song': commentary.getId_song(),
+                'date': commentary.getDate(),
+                'description': commentary.getDescription()
+                }
+            Data.append(Fact)
+    
+    answer = jsonify({'comments_song': Data})
+
+    return (answer)
+
 # --------------- Playlist ---------------
 
 # Get playlists
