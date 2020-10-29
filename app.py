@@ -280,6 +280,17 @@ def lastSong():
     answer = jsonify({'message': 'Last song', 'song': Fact})
     return (answer)
 
+# Put song change state
+@app.route('/songs_state/<int:id>', methods=['PUT'])
+def updateSongState(id):
+    global Songs
+    for i in range(len(Songs)):
+        if id == Songs[i].getId():
+            Songs[i].setState(request.json['state'])
+            break
+    answer = jsonify({'message': 'Updated song_state'})
+    return (answer)
+
 # --------------- Commentary ---------------
 
 # Get comments
