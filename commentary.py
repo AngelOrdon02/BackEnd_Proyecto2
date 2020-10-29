@@ -2,7 +2,7 @@
 *Comentario (Commentary)
 - id (id)
 - id_usuario (id_user)
-- nombre_usuario (name_user)
+- nombre de usuario usuario (username_user)
 - id_cancion (id_song)
 - fecha (date)
 - descripcion (description)
@@ -10,10 +10,10 @@
 
 class Commentary:
 
-    def __init__(self, id, id_user, name_user, id_song, date, description):
+    def __init__(self, id, id_user, username_user, id_song, date, description):
         self.id = id
         self.id_user = id_user
-        self.name_user = name_user
+        self.username_user = username_user
         self.id_song = id_song
         self.date = date
         self.description = description
@@ -33,12 +33,12 @@ class Commentary:
     def setId_user(self, id_user):
         self.id_user = id_user
 
-    # name_user
-    def getName_user(self):
-        return self.name_user
+    # username_user
+    def getUsername_user(self):
+        return self.username_user
     
-    def setName_user(self, name_user):
-        self.name_user = name_user
+    def setUsername_user(self, username_user):
+        self.username_user = username_user
     
     # id_song
     def getId_song(self):
