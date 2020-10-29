@@ -29,10 +29,10 @@ Users.append(User(2,'Diego', 'Pinto', 'diego', '123', 2))
 Songs.append(Song(1, 'International Love', 'Fidel Nadal', 'International Love', 'https://images-na.ssl-images-amazon.com/images/I/61AobF8AZLL._SY355_.jpg', '2008', 'https://open.spotify.com/track/2O282x8rik9PMihQAx6bAq?si=YBgZXzIzQoWI5b2x5Gzyqw', 'https://www.youtube.com/watch?v=y3WGp_ZEGUo', 1))
 Songs.append(Song(2, 'Vibra Positiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 1))
 
-Comments.append(Commentary(1, 1, 1, '2020', 'Que buena rola'))
-Comments.append(Commentary(2, 2, 1, '2020', 'La escucho diario'))
-Comments.append(Commentary(3, 1, 2, '2020', 'Me levanta el animo'))
-Comments.append(Commentary(4, 2, 2, '2020', 'Buen ritmo'))
+Comments.append(Commentary(1, 1, 'Angel', 1, '2020', 'Que buena rola'))
+Comments.append(Commentary(2, 2, 'Diego', 1, '2020', 'La escucho diario'))
+Comments.append(Commentary(3, 1, 'Angel', 2, '2020', 'Me levanta el animo'))
+Comments.append(Commentary(4, 2, 'Diego', 2, '2020', 'Buen ritmo'))
 
 Playlists.append(Playlist(1, 1, 'Rolitas', 'Musica favorita :D'))
 Playlists.append(Playlist(2, 2, 'Musica varia', 'Musica para el gimnasio'))
@@ -289,6 +289,7 @@ def selectAllComments():
         Fact = {
             'id': commentary.getId(),
             'id_user': commentary.getId_user(),
+            'name_user': commentary.getName_user(),
             'id_song': commentary.getId_song(),
             'date': commentary.getDate(),
             'description': commentary.getDescription()
@@ -308,6 +309,7 @@ def findCommentary(id):
             Fact = {
                 'id': commentary.getId(),
                 'id_user': commentary.getId_user(),
+                'name_user': commentary.getName_user(),
                 'id_song': commentary.getId_song(),
                 'date': commentary.getDate(),
                 'description': commentary.getDescription()
@@ -328,6 +330,7 @@ def insertCommentary():
     new = Commentary(
         position,
         request.json['id_user'],
+        request.json['name_user'],
         request.json['id_song'],
         request.json['date'],
         request.json['description']
@@ -344,6 +347,7 @@ def updateCommentary(id):
         if id == Comments[i].getId():
             Comments[i].setId(request.json['id'])
             Comments[i].setId_user(request.json['id_user'])
+            Comments[i].setName_user(request.json['name_user'])
             Comments[i].setId_song(request.json['id_song'])
             Comments[i].setDate(request.json['date'])
             Comments[i].setDescription(request.json['description'])
@@ -371,6 +375,7 @@ def lastCommentary():
     Fact = {
         'id': commentary.getId(),
         'id_user': commentary.getId_user(),
+        'name_user': commentary.getName_user(),
         'id_song': commentary.getId_song(),
         'date': commentary.getDate(),
         'description': commentary.getDescription()
@@ -389,6 +394,7 @@ def selectAllCommentsSong(id):
             Fact = {
                 'id': commentary.getId(),
                 'id_user': commentary.getId_user(),
+                'name_user': commentary.getName_user(),
                 'id_song': commentary.getId_song(),
                 'date': commentary.getDate(),
                 'description': commentary.getDescription()
