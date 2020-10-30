@@ -157,6 +157,32 @@ def lastUser():
     answer = jsonify({'message': 'Last user', 'user': Fact})
     return (answer)
 
+# Get user exists
+@app.route('/user_exists/<string:username>', methods=['GET'])
+def findUserExists(username):
+    global Users
+
+    '''
+    Si el state = 0 significa que no existe ese usuario
+    codigo cero (0) no existe
+
+    Si el state = 1 significa que si existe ese usuario
+    codigo uno (1) existe
+    '''
+    state = 0
+
+    for i in range(len(Users)):
+        if username == Users[i].getUsername():
+            state = 1
+            break
+    
+    if state == 1:
+        answer = jsonify({'message': 'User exists', 'state': state})
+        return (answer)
+    elif state == 0:
+        answer = jsonify({'message': 'User does not exist', 'state': state})
+        return (answer)
+
 # --------------- Song ---------------
 
 # Get songs
