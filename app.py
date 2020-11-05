@@ -50,6 +50,62 @@ Playlist_song_array.append(Playlist_song(3, 1, 2))
 def rutaInicial():
     return ("Corriendo API :D, uff")
 
+# --------------- Auth ---------------
+
+@app.route('/login', methods=['POST'])
+def loginUser():
+    global Users
+
+    '''
+    Si el state = 0 significa que hubo un error
+    codigo cero (0) error
+
+    Si el state = 1 significa que si se loggeo con exito
+    codigo uno (1) username y password correctos
+
+    Si el state = 2 significa que el password esta incorrecta
+    codigo dos (2) username correcto y password incorrecto
+
+    Si el state = 3 significa que el usuario esta incorrecto
+    codigo tres (3) username incorrecto y password correcto
+
+    Si el state = 4 significa que los datos son incorrectos
+    codigo cuatro (4) username y password incorrectos
+    '''
+
+    username = request.json['username']
+    password = request.json['password']
+    id_user = 0
+
+    state_username = False
+    state_password = False
+    state = 0
+
+    for i in range(len(Users)):
+        if username == Users[i].getUsername():
+            state_username = True
+            id_user = Users[i].getId()
+            break
+    
+    for i in range(len(Users)):
+        if password == Users[i].getPassword():
+            state_password = True
+            break
+    
+    if (state_username == False) and (state_password == False):
+        state = 4
+    elif (state_username == False) and (state_password == True):
+        state = 3
+    elif (state_username == True) and (state_password == False):
+        state = 2
+    elif (state_username == True) and (state_password == True):
+        state = 1
+
+    answer = jsonify({'message': 'Login process', 'state': state, 'id': id_user})
+    return (answer)
+    #answer = jsonify({'message': 'Added user'})
+    #return (answer)
+
 # --------------- User ---------------
 
 # Get users
