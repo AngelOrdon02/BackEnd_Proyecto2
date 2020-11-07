@@ -26,11 +26,11 @@ Playlist_song_array = []
 Users.append(User(1,'Angel', 'Ordon', 'root', 'root', 1))
 Users.append(User(2,'Diego', 'Pinto', 'diego', '123', 2))
 
-Songs.append(Song(1, 'International Love', 'Fidel Nadal', 'International Love', 'https://images-na.ssl-images-amazon.com/images/I/61AobF8AZLL._SY355_.jpg', '2008', 'https://open.spotify.com/track/2O282x8rik9PMihQAx6bAq?si=YBgZXzIzQoWI5b2x5Gzyqw', 'https://www.youtube.com/watch?v=y3WGp_ZEGUo', 1))
-Songs.append(Song(2, 'Vibra Positiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 1))
+Songs.append(Song(1, 'International Love', 'Fidel Nadal', 'International Love', 'https://images-na.ssl-images-amazon.com/images/I/61AobF8AZLL._SY355_.jpg', '2008', 'https://open.spotify.com/embed/track/2O282x8rik9PMihQAx6bAq', 'https://www.youtube.com/watch?v=y3WGp_ZEGUo', 1))
+Songs.append(Song(2, 'Vibra Positiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/embed/track/061cp08tzW2q8qaqNkad28', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 1))
 
-Songs.append(Song(3, 'Vibra Positiva - inactiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 2))
-Songs.append(Song(4, 'Vibra Positiva - inactiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/track/061cp08tzW2q8qaqNkad28?si=aXKtj4bvRhiANMoo7r3JRg', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 2))
+Songs.append(Song(3, 'Vibra Positiva - inactiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/embed/track/061cp08tzW2q8qaqNkad28', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 2))
+Songs.append(Song(4, 'Vibra Positiva - inactiva', 'Zona Ganjah', 'Con Rastafari Todo Concuerda', 'https://i.scdn.co/image/ab67616d0000b273fb61203117d2324964d71c47', '2005', 'https://open.spotify.com/embed/track/061cp08tzW2q8qaqNkad28', 'https://www.youtube.com/watch?v=lFw6sxMGIHk', 2))
 
 Comments.append(Commentary(1, 1, 'root', 1, '2020', 'Que buena rola'))
 Comments.append(Commentary(2, 2, 'diego', 1, '2020', 'La escucho diario'))
