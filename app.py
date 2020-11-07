@@ -239,6 +239,17 @@ def findUserExists(username):
         answer = jsonify({'message': 'User does not exist', 'state': state})
         return (answer)
 
+# Get user - recover password
+@app.route('/users_recover/<string:username>', methods=['GET'])
+def recoverUser(username):
+    global Users
+    for user in Users:
+        if user.getUsername() == username:
+            password = user.getPassword()
+            break
+    answer = jsonify({'message': 'User found', 'user_password': password})
+    return (answer)
+
 # --------------- Song ---------------
 
 # Get songs
