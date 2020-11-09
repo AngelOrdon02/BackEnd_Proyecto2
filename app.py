@@ -44,11 +44,16 @@ Playlist_song_array.append(Playlist_song(1, 1, 1))
 Playlist_song_array.append(Playlist_song(2, 2, 1))
 Playlist_song_array.append(Playlist_song(3, 1, 2))
 
+# --------------- CONTADORES ---------------
+# Es cinco porque ya hay 4 registros en las lineas (29 - 33)
+cont_song = 5
+
 # --------------- INICIO RUTAS ---------------
 
 @app.route('/', methods=['GET'])
 def rutaInicial():
-    return ("Corriendo API :D, uff")
+    #global cont_song
+    return ("Corriendo API :D, uff: " + str(cont_song) + " hola")
 
 # --------------- Auth ---------------
 
@@ -303,10 +308,12 @@ def findSong(id):
 @app.route('/songs', methods=['POST'])
 def insertSong():
     global Songs
+    global cont_song
 
     # obteniendo el ultimo id para tener un correlativo
-    song = Songs[-1]
-    position = song.getId() + 1
+    #song = Songs[-1]
+    #position = song.getId() + 1
+    position = cont_song
 
     new = Song(
         position,
@@ -320,6 +327,8 @@ def insertSong():
         request.json['state']
     )
     Songs.append(new)
+    
+    cont_song += 1
     answer = jsonify({'message': 'Added song'})
     return (answer)
 
