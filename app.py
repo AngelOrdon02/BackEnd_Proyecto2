@@ -172,6 +172,27 @@ def insertUser():
     )
     Users.append(new)
     answer = jsonify({'message': 'Added user'})
+
+    # ------ Crea una playlist automatica por cada usuario ------
+    global Playlists
+    
+    # obteniendo el ultimo id para tener un correlativo
+    playlist = Playlists[-1]
+    position_playlist = playlist.getId() + 1
+    id_user = position
+    
+    name_user = request.json['username']
+    name = "Playlist de " + str(name_user)
+    description = "Playlist personal :D"
+
+    new_playlist = Playlist(
+        position_playlist,
+        id_user,
+        name,
+        description
+    )
+    Playlists.append(new_playlist)
+    
     return (answer)
 
 # Put user
