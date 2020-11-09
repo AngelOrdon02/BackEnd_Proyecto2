@@ -43,6 +43,7 @@ Playlists.append(Playlist(2, 2, 'Musica varia', 'Musica para el gimnasio'))
 Playlist_song_array.append(Playlist_song(1, 1, 1))
 Playlist_song_array.append(Playlist_song(2, 2, 1))
 Playlist_song_array.append(Playlist_song(3, 1, 2))
+Playlist_song_array.append(Playlist_song(4, 2, 2))
 
 # --------------- CONTADORES ---------------
 # Es cinco porque ya hay 4 registros en las lineas (29 - 33)
@@ -727,6 +728,51 @@ def lastPlaylist_song():
         'id_song': playlist_song.getId_song()
     }
     answer = jsonify({'message': 'Last playlist_song', 'playlist_song': Fact})
+    return (answer)
+
+# Get id_song exists in playlist_song_array
+@app.route('/song_exists_playlist/<int:id>', methods=['GET'])
+def findSongExistsPlaylist(id):
+    global Playlist_song_array
+
+    '''
+    Si el state = 0 significa que no existe la cancion
+    codigo cero (0) no existe
+
+    Si el state = 1 significa que si existe la cancion
+    codigo uno (1) existe
+    '''
+    state = 0
+
+    for i in range(len(Playlist_song_array)):
+        if id == Playlist_song_array[i].getId_song():
+            state = 1
+            break
+    
+    if state == 1:
+        answer = jsonify({'message': 'Song exists', 'state': state})
+        return (answer)
+    elif state == 0:
+        answer = jsonify({'message': 'Song does not exist', 'state': state})
+        return (answer)
+
+# Get playlist_song_array for id_playlist
+@app.route('/playlist_song_id_playlist/<int:id>', methods=['GET'])
+def selectAllPlaylist_song_array_idPlaylist(id):
+    global Playlist_song_array
+    Data = []
+
+    for playlist_song in Playlist_song_array:
+        if playlist_song.getId_playlist() == id:
+            Fact = {
+            'id': playlist_song.getId(),
+            'id_playlist': playlist_song.getId_playlist(),
+            'id_song': playlist_song.getId_song()
+            }
+            Data.append(Fact)
+    
+    answer = jsonify({'playlist_song_array_id_playlist': Data})
+
     return (answer)
 
 # --------------- FIN RUTAS ---------------
